@@ -7,10 +7,13 @@ RUN docker-php-ext-install pdo_mysql
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Update the default Apache configuration to point to the public directory
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+# Allow .htaccess overrides
+RUN sed -i -e '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Set permissions
+# Copy your application files into the container
+COPY . /var/www/html/
+
+# Fix permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
