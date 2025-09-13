@@ -18,9 +18,6 @@ RUN sed -i -e 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-availa
 # Copy all the application files from the current directory into the container's web root
 COPY . /var/www/html/
 
-# Copy and rename htaccess.example to .htaccess for rewrite rules
-RUN cp /var/www/html/htaccess.example /var/www/html/.htaccess
-
 # Fix file permissions to allow the web server to read and write files
 RUN chown -R www-data:www-data /var/www/html/ \
     && chmod -R 755 /var/www/html/
