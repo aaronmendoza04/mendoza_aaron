@@ -43,7 +43,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |
 */
 
-$router->get('/', 'Welcome::index');
+$router->get('/', 'StudentsController::index');
 
 // Students CRUD Routes for GUI
 $router->get('/students', 'StudentsController::index');
