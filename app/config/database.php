@@ -59,11 +59,11 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 $database['main'] = array(
     'driver'    => 'mysql',
-    'hostname'  => 'sql110.infinityfree.com',
+    'hostname'  => 'sql104.freesqldatabase.com',
     'port'      => '3306',
-    'username'  => 'if0_39916087',
-    'password'  => '041505kK', // Replace this with your actual vPanel password
-    'database'  => 'if0_39916087_mendoza_aaronDB',
+    'username'  => 'sql10619941',
+    'password'  => 'M2D3N2A9x',
+    'database'  => 'sql10619941',
     'charset'   => 'utf8',
     'dbprefix'  => '',
     // Optional for SQLite
