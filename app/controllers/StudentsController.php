@@ -13,6 +13,9 @@ class StudentsController extends Controller {
     public function index()
     {
         $search = $this->io->get('search') ?? '';
+        if ($search === null) {
+            $search = '';
+        }
         $page = (int)($this->io->get('page') ?? 1);
         $limit = 10; // Records per page
 
