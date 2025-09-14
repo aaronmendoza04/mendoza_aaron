@@ -12,36 +12,7 @@ class StudentsController extends Controller {
 
     public function index()
     {
-        $search = '';
-        if (isset($_GET['search'])) {
-            $search = $_GET['search'];
-        }
-        $page = 1;
-        if (isset($_GET['page'])) {
-            $page = (int)$_GET['page'];
-        }
-        $limit = 10; // Records per page
-
-        $total_students = $this->StudentsModel->count_students($search);
-        $students = $this->StudentsModel->get_students($search, $limit, $page);
-
-        // Load pagination library
-        $this->call->library('pagination');
-        $this->pagination->set_theme('tailwind');
-        $url = 'students';
-        if (!empty($search)) {
-            $url .= '?search=' . urlencode($search);
-            $this->pagination->set_options(['page_delimiter' => '&page=']);
-        } else {
-            $this->pagination->set_options(['page_delimiter' => '?page=']);
-        }
-        $pagination_data = $this->pagination->initialize($total_students, $limit, $page, $url, 5);
-
-        $data['students'] = $students;
-        $data['pagination'] = $this->pagination->paginate();
-        $data['search'] = $search;
-        $data['page'] = $page;
-        $data['total'] = $total_students;
+        $data['students'] = $this->StudentsModel->all();
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
