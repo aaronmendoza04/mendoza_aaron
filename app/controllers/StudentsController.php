@@ -12,11 +12,14 @@ class StudentsController extends Controller {
 
     public function index()
     {
-        $search = $this->io->get('search') ?? '';
-        if ($search === null) {
-            $search = '';
+        $search = '';
+        if ($this->io->has('search')) {
+            $search = $this->io->get('search');
         }
-        $page = (int)($this->io->get('page') ?? 1);
+        $page = 1;
+        if ($this->io->has('page')) {
+            $page = (int)$this->io->get('page');
+        }
         $limit = 10; // Records per page
 
         $total_students = $this->StudentsModel->count_students($search);
