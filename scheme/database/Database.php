@@ -36,7 +36,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 /**
 * ------------------------------------------------------
-*  Class Database
+* Class Database
 * ------------------------------------------------------
  */
 class Database {
@@ -272,7 +272,11 @@ class Database {
         $this->bindValues = $args;
 
         $stmt = $this->db->prepare($query);
-        $stmt->execute($this->bindValues);
+        if (empty($this->bindValues) || !is_array($this->bindValues)) {
+            $stmt->execute();
+        } else {
+            $stmt->execute($this->bindValues);
+        }
         return $stmt;
     }
 
@@ -735,7 +739,6 @@ class Database {
     {
         $this->grouped = true;
         call_user_func_array($obj, [$this]);
-        $this->where .= ')';
 
         return $this;
     }
@@ -784,7 +787,7 @@ class Database {
         }
 
         if ($this->grouped) {
-            $where = '(' . $where;
+            $where = '(' . $where . ')';
             $this->grouped = false;
         }
 
@@ -887,7 +890,7 @@ class Database {
         $where = $field . ' ' . $type . 'LIKE ?';
 
         if ($this->grouped) {
-            $where = '(' . $where;
+            $where = '(' . $where . ')';
             $this->grouped = false;
         }
 
@@ -1288,13 +1291,19 @@ class Database {
     {
         $this->buildQuery();
         $this->getSQL = $this->sql;
+        // Debug output for SQL and bindValues
+        error_log("SQL Query: " . $this->getSQL);
+        error_log("Bind Values: " . print_r($this->bindValues, true));
         try {
             $stmt = $this->db->prepare($this->sql);
             $stmt->execute($this->bindValues);
             $this->rowCount = $stmt->rowCount();
             return $stmt->fetchAll($mode);
         } catch(Exception $e) {
-            throw new PDOException($e->getMessage().'<div style="background-color:#000;color:#fff;padding:15px">Query: '.$this->getSQL.'</div>');
+            $errorMessage = $e->getMessage() . '<div style="background-color:#000;color:#fff;padding:15px">Query: ' . $this->getSQL . '</div>';
+            $errorMessage .= '<div style="background-color:#222;color:#f88;padding:15px">Bind Values: ' . htmlspecialchars(print_r($this->bindValues, true)) . '</div>';
+            $errorMessage .= '<div style="background-color:#444;color:#ff0;padding:15px">Stack Trace: <pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre></div>';
+            throw new PDOException($errorMessage);
         }
     }
 
