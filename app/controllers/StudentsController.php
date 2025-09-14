@@ -10,10 +10,33 @@ class StudentsController extends Controller {
         $this->call->library('session');
     }
 
-   
     public function index()
     {
-        $data['students'] = $this->StudentsModel->all();
+        $search = $this->io->get('search') ?? '';
+        $page = (int)($this->io->get('page') ?? 1);
+        $limit = 10; // Records per page
+
+        $total_students = $this->StudentsModel->count_students($search);
+        $students = $this->StudentsModel->get_students($search, $limit, $page);
+
+        // Load pagination library
+        $this->call->library('pagination');
+        $this->pagination->set_theme('tailwind');
+        $url = 'students';
+        if (!empty($search)) {
+            $url .= '?search=' . urlencode($search);
+            $this->pagination->set_options(['page_delimiter' => '&page=']);
+        } else {
+            $this->pagination->set_options(['page_delimiter' => '?page=']);
+        }
+        $pagination_data = $this->pagination->initialize($total_students, $limit, $page, $url, 5);
+
+        $data['students'] = $students;
+        $data['pagination'] = $this->pagination->paginate();
+        $data['search'] = $search;
+        $data['page'] = $page;
+        $data['total'] = $total_students;
+
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -22,7 +45,6 @@ class StudentsController extends Controller {
         $this->call->view('students_crud', $data);
     }
 
-   
     public function create()
     {
         $data['student'] = []; // Empty array for new student
@@ -30,8 +52,6 @@ class StudentsController extends Controller {
         $this->call->view('students_crud', $data);
     }
 
-    
-    
     public function edit($id)
     {
         $student = $this->StudentsModel->find($id);
@@ -46,7 +66,6 @@ class StudentsController extends Controller {
         }
     }
 
-  
     public function save()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -100,7 +119,6 @@ class StudentsController extends Controller {
         }
     }
 
-   
     public function delete($id)
     {
                 if ($this->StudentsModel->delete($id)) {
@@ -114,7 +132,7 @@ class StudentsController extends Controller {
                     }
                     $_SESSION['flash_message'] = 'Failed to delete student.';
                 }
-                
+
                 header('Location: /students');
                 exit;
     }
@@ -125,5 +143,5 @@ class StudentsController extends Controller {
         header('Content-Type: application/json');
         echo json_encode($students);
     }
-    
+
 }
