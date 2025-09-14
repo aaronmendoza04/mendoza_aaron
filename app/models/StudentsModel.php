@@ -25,11 +25,11 @@ class StudentsModel extends Model {
      */
     public function get_students($search = null, $limit = 10, $page = 1)
     {
-        $this->table($this->table);
+        $this->db->table($this->table);
 
         if (!empty($search)) {
             $searchTerm = '%' . $search . '%';
-            $this->grouped(function($db) use ($searchTerm) {
+            $this->db->grouped(function($db) use ($searchTerm) {
                 $db->like('last_name', $searchTerm)
                    ->or_like('first_name', $searchTerm)
                    ->or_like('email', $searchTerm);
@@ -37,10 +37,10 @@ class StudentsModel extends Model {
         }
 
         $offset = ($page - 1) * $limit;
-        $this->limit($offset, $limit);
-        $this->order_by('id', 'DESC');
+        $this->db->limit($offset, $limit);
+        $this->db->order_by('id', 'DESC');
 
-        return $this->get_all();
+        return $this->db->get_all();
     }
 
     /**
@@ -51,17 +51,17 @@ class StudentsModel extends Model {
      */
     public function count_students($search = null)
     {
-        $this->table($this->table);
+        $this->db->table($this->table);
 
         if (!empty($search)) {
             $searchTerm = '%' . $search . '%';
-            $this->grouped(function($db) use ($searchTerm) {
+            $this->db->grouped(function($db) use ($searchTerm) {
                 $db->like('last_name', $searchTerm)
                    ->or_like('first_name', $searchTerm)
                    ->or_like('email', $searchTerm);
             });
         }
 
-        return $this->count();
+        return $this->db->count();
     }
 }
