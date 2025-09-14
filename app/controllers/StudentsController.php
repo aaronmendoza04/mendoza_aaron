@@ -8,11 +8,25 @@ class StudentsController extends Controller {
         $this->call->database();
         $this->call->model('StudentsModel');
         $this->call->library('session');
+        $this->call->library('pagination');
     }
 
     public function index()
     {
-        $data['students'] = $this->StudentsModel->all();
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $perPage = 5;
+
+        $pagination = $this->StudentsModel->paginate($perPage, $page);
+
+        $data['students'] = $pagination['data'];
+        $data['total'] = $pagination['total'];
+        $data['per_page'] = $pagination['per_page'];
+        $data['current_page'] = $pagination['current_page'];
+        $data['last_page'] = $pagination['last_page'];
+
+        // Generate pagination links
+        $this->pagination->initiate($pagination['total'], $perPage, $page, '/students', 2);
+        $data['pagination_links'] = $this->pagination->create_links();
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();

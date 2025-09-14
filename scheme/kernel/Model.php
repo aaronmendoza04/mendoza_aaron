@@ -213,7 +213,7 @@ class Model {
         }
         
         $total = $this->db->count();
-        $results = $this->db->table($this->table)->limit($per_page, $offset)->get_all();
+        $results = $this->db->table($this->table)->limit($offset, $per_page)->get_all();
         
         return [
             'data' => $results,
