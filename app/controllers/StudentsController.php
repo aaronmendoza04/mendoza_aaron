@@ -13,12 +13,12 @@ class StudentsController extends Controller {
     public function index()
     {
         $search = '';
-        if ($this->io->has('search')) {
-            $search = $this->io->get('search');
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
         }
         $page = 1;
-        if ($this->io->has('page')) {
-            $page = (int)$this->io->get('page');
+        if (isset($_GET['page'])) {
+            $page = (int)$_GET['page'];
         }
         $limit = 10; // Records per page
 
