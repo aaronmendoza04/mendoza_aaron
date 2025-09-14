@@ -112,6 +112,13 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </table>
         </div>
 
+        <!-- Pagination -->
+        <?php if (!empty($pagination_links)): ?>
+            <div class="mt-6 px-2 sm:px-0 overflow-x-auto">
+                <?= $pagination_links ?>
+            </div>
+        <?php endif; ?>
+
 
     </div>
 
