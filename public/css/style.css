@@ -119,6 +119,49 @@ h1 {
         width: 100%;
         margin-bottom: 0.5rem;
     }
+
+    /* Stack action buttons vertically on tablets and mobile */
+    .table td:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        align-items: stretch;
+    }
+
+    .table td:last-child .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .table th, .table td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .table-responsive {
+        font-size: 0.85rem;
+    }
 }
 
 /* Additional modern touches */
