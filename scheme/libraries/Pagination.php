@@ -286,7 +286,7 @@ class Pagination
      */
     protected function build_link($page, $label, $active_class = '')
     {
-        $url = site_url($this->page_array['url'].$this->page_delimiter.$page);
-        return '<li class="'.$this->classes['li'].' '.$active_class.'"><a class="'.$this->classes['a'].'" href="'.$url.'">'.$label.'</a></li>';
+        $url = $this->page_array['url'] . $this->page_delimiter . $page;
+        return '<li class="' . $this->classes['li'] . ' ' . $active_class . '"><a class="' . $this->classes['a'] . '" href="' . $url . '">' . $label . '</a></li>';
     }
 }
