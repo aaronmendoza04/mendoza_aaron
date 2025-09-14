@@ -41,7 +41,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
     <nav class="bg-slate-900/95 backdrop-blur-lg border-b border-slate-700">
         <div class="container mx-auto flex items-center justify-between p-4">
-            <a class="text-xl font-bold text-sky-400" href="/">Students CRUD</a>
+            <a class="text-xl font-bold text-sky-400" href="/">Aaron Mendoza</a>
             <div class="flex items-center">
                 <a class="px-4 py-2 font-medium rounded-lg text-slate-300 hover:text-sky-400 transition-colors" href="/">Home</a>
                 <a class="px-4 py-2 font-medium rounded-lg text-sky-400 border-b-2 border-sky-400" href="/students">Students</a>
@@ -58,6 +58,19 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
+
+        <!-- Search Form -->
+        <form method="get" action="/students" class="mb-6">
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <input type="text" name="search" class="flex-1 p-3 rounded-lg bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-400" placeholder="Search by name or email..." value="<?= htmlspecialchars($search ?? '') ?>" />
+                <button type="submit" class="gradient-button px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    Search
+                </button>
+                <?php if (!empty($search)): ?>
+                    <a href="/students" class="px-6 py-3 rounded-lg font-semibold bg-slate-600 text-slate-200 shadow transition-all duration-300 transform hover:-translate-y-1 hover:bg-slate-500">Clear</a>
+                <?php endif; ?>
+            </div>
+        </form>
 
         <form method="post" action="/students/save" class="mb-8">
             <input type="hidden" name="id" value="<?= isset($student['id']) ? htmlspecialchars($student['id']) : '' ?>" />
@@ -108,6 +121,11 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            <?= $pagination ?? '' ?>
         </div>
     </div>
 
