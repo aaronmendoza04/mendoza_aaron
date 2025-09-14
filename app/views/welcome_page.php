@@ -15,30 +15,40 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-            background: #f8fafc;
-            color: #334155;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 960px;
             margin: 3rem auto;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
             overflow: hidden;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header {
-            background: #3B82F6; /* lighter blue */
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: #ffffff;
             padding: 2rem;
             text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .header h1 {
             margin: 0;
             font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .main {
@@ -46,24 +56,27 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         }
 
         h2 {
-            color: #1e40af;
+            color: #e2e8f0;
             margin-top: 2rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         p {
             line-height: 1.6;
             margin-bottom: 1rem;
+            color: #cbd5e0;
         }
 
         code, pre {
             display: block;
-            background: #f1f5f9;
+            background: rgba(255, 255, 255, 0.05);
             padding: 1rem;
-            border-left: 4px solid #3b82f6;
+            border-left: 4px solid #667eea;
             margin-bottom: 1rem;
             font-size: 0.9rem;
-            color: #1e293b;
+            color: #e2e8f0;
             overflow-x: auto;
+            border-radius: 8px;
         }
 
         ul {
@@ -73,14 +86,17 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
         li {
             margin-bottom: 0.5rem;
+            color: #cbd5e0;
         }
 
         a {
-            color: #2563eb;
+            color: #667eea;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         a:hover {
+            color: #5a67d8;
             text-decoration: underline;
         }
 
@@ -88,8 +104,9 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             font-size: 0.9rem;
             text-align: center;
             padding: 1rem;
-            background: #f1f5f9;
-            border-top: 1px solid #e2e8f0;
+            background: rgba(26, 26, 46, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
         }
 
         .grid {
@@ -99,15 +116,28 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         }
 
         .card {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         .card h3 {
             margin-top: 0;
-            color: #0f172a;
+            color: #e2e8f0;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            color: #cbd5e0;
+            margin-bottom: 0;
         }
     </style>
 </head>
