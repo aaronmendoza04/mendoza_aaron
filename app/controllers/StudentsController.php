@@ -16,7 +16,14 @@ class StudentsController extends Controller {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $perPage = 5;
 
-        $pagination = $this->StudentsModel->paginate($perPage, $page);
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+
+        if (!empty($keyword)) {
+            $pagination = $this->StudentsModel->searchPaginate($keyword, $filter, $perPage, $page);
+        } else {
+            $pagination = $this->StudentsModel->paginate($perPage, $page);
+        }
 
         $data['students'] = $pagination['data'];
         $data['total'] = $pagination['total'];
@@ -24,9 +31,16 @@ class StudentsController extends Controller {
         $data['current_page'] = $pagination['current_page'];
         $data['last_page'] = $pagination['last_page'];
 
-        // Generate pagination links
-        $this->pagination->initiate($pagination['total'], $perPage, $page, '/students', 2);
+        $queryParams = http_build_query(array_filter([
+            'keyword' => $keyword,
+            'filter' => $filter
+        ]));
+        $baseUrl = '/students' . ($queryParams ? '?' . $queryParams : '');
+        $this->pagination->initiate($pagination['total'], $perPage, $page, $baseUrl, 2);
         $data['pagination_links'] = $this->pagination->create_links();
+
+        $data['keyword'] = $keyword;
+        $data['filter'] = $filter;
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -38,7 +52,7 @@ class StudentsController extends Controller {
 
     public function create()
     {
-        $data['student'] = []; // Empty array for new student
+        $data['student'] = [];
         $data['students'] = $this->StudentsModel->all();
         $this->call->view('students_crud', $data);
     }
@@ -67,7 +81,6 @@ class StudentsController extends Controller {
                 'email' => $this->io->post('email')
             ];
 
-            // Validate required fields
             if (empty($data['last_name']) || empty($data['first_name']) || empty($data['email'])) {
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
@@ -78,7 +91,6 @@ class StudentsController extends Controller {
             }
 
             if (!empty($id)) {
-                // Update existing student
                 if ($this->StudentsModel->update($id, $data)) {
                     if (session_status() == PHP_SESSION_NONE) {
                         session_start();
@@ -91,7 +103,6 @@ class StudentsController extends Controller {
                     $_SESSION['flash_message'] = 'Failed to update student.';
                 }
             } else {
-                // Create new student
                 if ($this->StudentsModel->insert($data)) {
                     if (session_status() == PHP_SESSION_NONE) {
                         session_start();
@@ -112,27 +123,26 @@ class StudentsController extends Controller {
 
     public function delete($id)
     {
-                if ($this->StudentsModel->delete($id)) {
-                    if (session_status() == PHP_SESSION_NONE) {
-                        session_start();
-                    }
-                    $_SESSION['flash_message'] = 'Student deleted successfully.';
-                } else {
-                    if (session_status() == PHP_SESSION_NONE) {
-                        session_start();
-                    }
-                    $_SESSION['flash_message'] = 'Failed to delete student.';
-                }
+        if ($this->StudentsModel->delete($id)) {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['flash_message'] = 'Student deleted successfully.';
+        } else {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['flash_message'] = 'Failed to delete student.';
+        }
 
-                header('Location: /students');
-                exit;
+        header('Location: /students');
+        exit;
     }
-
 
     function get_all(){
         $students = $this->StudentsModel->all();
         header('Content-Type: application/json');
         echo json_encode($students);
     }
-
 }
+?>
