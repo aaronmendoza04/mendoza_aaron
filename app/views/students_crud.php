@@ -7,9 +7,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Students CRUD</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -51,7 +49,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
     <div class="container mx-auto p-4 md:p-8 mt-8 bg-slate-800/80 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-sm animate-fade-in">
 
-        <h1 class="text-center font-bold text-4xl text-sky-400 mb-6 drop-shadow-md">Students CRUD</h1>
+        <h1 class="text-center font-bold text-4xl text-sky-400 mb-6 drop-shadow-md">Student Lists</h1>
 
         <?php if (!empty($message)): ?>
             <div class="p-4 mb-6 rounded-lg text-emerald-300 bg-emerald-900/50 border border-emerald-800 animate-slide-in-right" role="alert">
@@ -59,7 +57,24 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </div>
         <?php endif; ?>
 
-
+        <form method="get" action="/students" class="mb-8 flex gap-2">
+            <input
+                type="text"
+                name="keyword"
+                placeholder="Search students..."
+                value="<?= isset($keyword) ? htmlspecialchars($keyword) : '' ?>"
+                class="flex-1 p-3 rounded-lg bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            >
+            <select name="filter" class="p-3 rounded-lg bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-400">
+                <option value="">All Fields</option>
+                <option value="first_name" <?= (isset($filter) && $filter == 'first_name') ? 'selected' : '' ?>>First Name</option>
+                <option value="last_name" <?= (isset($filter) && $filter == 'last_name') ? 'selected' : '' ?>>Last Name</option>
+                <option value="email" <?= (isset($filter) && $filter == 'email') ? 'selected' : '' ?>>Email</option>
+            </select>
+            <button type="submit" class="gradient-button px-6 py-3 rounded-lg font-semibold text-white shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                Search
+            </button>
+        </form>
 
         <form method="post" action="/students/save" class="mb-8">
             <input type="hidden" name="id" value="<?= isset($student['id']) ? htmlspecialchars($student['id']) : '' ?>" />
@@ -112,17 +127,14 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             </table>
         </div>
 
-        <!-- Pagination -->
         <?php if (!empty($pagination_links)): ?>
             <div class="mt-6 px-2 sm:px-0 overflow-x-auto">
                 <?= $pagination_links ?>
             </div>
         <?php endif; ?>
 
-
     </div>
 
-    <!-- Custom Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 w-full max-w-sm transform scale-95 transition-transform duration-300">
             <h3 class="text-xl font-bold mb-4 text-white">Confirm Deletion</h3>
@@ -135,7 +147,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     </div>
 
     <script>
-        // Custom Delete Modal Logic
         const deleteModal = document.getElementById('deleteModal');
         const confirmDeleteButton = document.getElementById('confirmDelete');
         const cancelDeleteButton = document.getElementById('cancelDelete');
@@ -144,7 +155,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             confirmDeleteButton.href = url;
             deleteModal.classList.remove('hidden', 'opacity-0');
             deleteModal.classList.add('flex', 'opacity-100');
-            // Animate the inner card
             setTimeout(() => {
                 deleteModal.querySelector('div').classList.remove('scale-95');
                 deleteModal.querySelector('div').classList.add('scale-100');
@@ -165,23 +175,20 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             hideDeleteModal();
         });
 
-        // Hide modal when clicking outside of it
         deleteModal.addEventListener('click', (e) => {
             if (e.target === deleteModal) {
                 hideDeleteModal();
             }
         });
 
-        // Handle alert dismissal
         const alertElement = document.querySelector('[role="alert"]');
         if (alertElement) {
             setTimeout(() => {
                 alertElement.style.opacity = '0';
                 alertElement.style.transform = 'translateX(100%)';
                 setTimeout(() => alertElement.remove(), 500);
-            }, 5000); // Hides after 5 seconds
+            }, 5000);
         }
-
     </script>
 </body>
 </html>
