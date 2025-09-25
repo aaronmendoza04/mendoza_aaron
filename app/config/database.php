@@ -43,31 +43,47 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 | EXPLANATION OF VARIABLES
 | -------------------------------------------------------------------
 |
-|	['driver'] 		The driver of your database server.
-|	['hostname'] 	The hostname of your database server.
-|	['port'] 		The port used by your database server.
-|	['username'] 	The username used to connect to the database
-|	['password'] 	The password used to connect to the database
-|	['database'] 	The name of the database you want to connect to
-|	['charset']		The default character set
+|   ['driver']      The driver of your database server.
+|   ['hostname']    The hostname of your database server.
+|   ['port']        The port used by your database server.
+|   ['username']    The username used to connect to the database
+|   ['password']    The password used to connect to the database
+|   ['database']    The name of the database you want to connect to
+|   ['charset']     The default character set
 |   ['dbprefix']    You can add an optional prefix, which will be added
-|				    to the table name when using the  Query Builder class
+|                   to the table name when using the  Query Builder class
 |   You can create new instance of the database by adding new element of
 |   $database variable.
 |   Example: $database['another_example'] = array('key' => 'value')
 */
 
+// Load environment variables from .env file
+$envFile = __DIR__ . '/../../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
+            if (!empty($key) && !empty($value)) {
+                putenv("$key=$value");
+            }
+        }
+    }
+}
+
 $database['main'] = array(
-    'driver'	=> 'mysql',
-    'hostname'	=> 'sql12.freesqldatabase.com',
-    'port'		=> '3306',
-    'username'	=> 'sql12799461',
-    'password'	=> 'zTERh8bdP1',
-    'database'	=> 'sql12799461',
-    'charset'	=> 'utf8mb4',
-    'dbprefix'	=> '',
+    'driver'    => 'mysql',
+    'hostname'  => getenv('DB_HOST'),
+    'port'      => getenv('DB_PORT'),
+    'username'  => getenv('DB_USER'),
+    'password'  => getenv('DB_PASS'),
+    'database'  => getenv('DB_NAME'),
+    'charset'   => getenv('DB_CHARSET') ?: 'utf8',
+    'dbprefix'  => '',
     // Optional for SQLite
     'path'      => ''
-);
+);            
 
 ?>
