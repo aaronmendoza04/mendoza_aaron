@@ -53,6 +53,13 @@ class UserController extends Controller {
     }
 
     public function create() {
+        // Check if user is admin
+        if (!$this->auth->has_role('admin')) {
+            $data['error'] = 'Access denied. Admin privileges required.';
+            $this->call->view('show', $data);
+            return;
+        }
+
         if($this->io->method() == 'post'){
             $lastname = $this->io->post('last_name');
             $firstname = $this->io->post('first_name');
@@ -73,6 +80,13 @@ class UserController extends Controller {
     }
 
     public function update($id) {
+        // Check if user is admin
+        if (!$this->auth->has_role('admin')) {
+            $data['error'] = 'Access denied. Admin privileges required.';
+            $this->call->view('show', $data);
+            return;
+        }
+
         $data['user'] = $this->UserModel->find($id);
         if($this->io->method() == 'post'){
             $lastname = $this->io->post('last_name');
@@ -94,6 +108,12 @@ class UserController extends Controller {
     }
 
     public function delete($id){
+        // Check if user is admin
+        if (!$this->auth->has_role('admin')) {
+            redirect('users/show');
+            return;
+        }
+
         if($this->UserModel->delete($id)){
             redirect('users/show');
         } else {

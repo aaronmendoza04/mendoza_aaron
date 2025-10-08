@@ -31,6 +31,7 @@
 - [x] Run database_setup.sql to create the users table
 - [x] Fix all session configuration and startup warnings when session is already active
 - [x] Fix Auth library loading by adding to autoload configuration
-- [ ] Start the PHP server and test login/register functionality
-- [ ] Verify that CRUD routes are protected and redirect to login when not authenticated
-- [ ] Test role-based access (admin vs user permissions if implemented)
+- [x] Start the PHP server and test login/register functionality - WORKING ✅
+- [x] Verify that CRUD routes are protected and redirect to login when not authenticated - WORKING ✅
+- [x] Implement role-based access control (admin can CRUD, user can only view) - COMPLETED ✅
+- [x] Update views to show/hide admin-only buttons and actions based on user role - COMPLETED ✅

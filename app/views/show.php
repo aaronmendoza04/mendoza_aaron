@@ -616,12 +616,13 @@
                     <i class="fas fa-arrow-left"></i>
                     Back to Dashboard
                 </a>
+                <?php if (lava_instance()->auth->has_role('admin')): ?>
                 <a href="<?=site_url('users/create');?>" class="btn btn-primary">
                     <i class="fas fa-plus"></i>
-                    Add Student
-                </a>
-            </div>
         </div>
+                </a>
+                <?php endif; ?>
+            </div>
 
         <!-- Search Section -->
         <div class="search-section">
@@ -689,12 +690,16 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
+                                            <?php if (lava_instance()->auth->has_role('admin')): ?>
                                             <a href="<?= site_url('users/update/'.$user['id']); ?>" class="btn-icon btn-edit" title="Edit Student">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="<?= site_url('users/delete/'.$user['id']); ?>" class="btn-icon btn-delete" title="Delete Student" onclick="return confirm('Are you sure you want to delete this student record? This action cannot be undone.')">
                                                 <i class="fas fa-trash"></i>
                                             </a>
+                                            <?php else: ?>
+                                            <span class="text-muted" style="font-size: 0.75rem; color: var(--text-muted);">View only</span>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>
@@ -705,11 +710,19 @@
                     <div class="empty-state">
                         <i class="fas fa-users"></i>
                         <h3>No Students Found</h3>
-                        <p>Start by adding your first student to the system.</p>
+                        <p>
+                            <?php if (lava_instance()->auth->has_role('admin')): ?>
+                                Start by adding your first student to the system.
+                            <?php else: ?>
+                                No student records are available for viewing.
+                            <?php endif; ?>
+                        </p>
+                        <?php if (lava_instance()->auth->has_role('admin')): ?>
                         <a href="<?= site_url('users/create'); ?>" class="btn btn-primary" style="margin-top: 1rem;">
                             <i class="fas fa-plus"></i>
                             Add First Student
                         </a>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>
