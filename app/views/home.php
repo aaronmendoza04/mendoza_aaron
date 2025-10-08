@@ -60,6 +60,68 @@
             padding: 2rem 1rem;
         }
 
+        /* Navigation */
+        .nav {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .user-avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
         /* Header */
         .header {
             background: var(--bg-card);
@@ -311,6 +373,28 @@
 </head>
 <body>
     <div class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="/" class="nav-brand">Student Management</a>
+            <div class="nav-links">
+                <?php
+                // Load Auth library to check login status
+                lava_instance()->call->library('Auth');
+                if (lava_instance()->auth->is_logged_in()) {
+                    $user = lava_instance()->auth->get_user();
+                    echo '<div class="user-info">';
+                    echo '<div class="user-avatar">' . strtoupper(substr($user['email'], 0, 1)) . '</div>';
+                    echo '<span>Welcome, ' . html_escape($user['email']) . '</span>';
+                    echo '</div>';
+                    echo '<a href="' . site_url('auth/logout') . '" class="nav-link">Logout</a>';
+                } else {
+                    echo '<a href="' . site_url('auth/login') . '" class="nav-link">Login</a>';
+                    echo '<a href="' . site_url('auth/register') . '" class="nav-link">Register</a>';
+                }
+                ?>
+            </div>
+        </nav>
+
         <!-- Header -->
         <div class="header">
             <h1>Student Management System</h1>

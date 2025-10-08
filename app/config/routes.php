@@ -44,6 +44,13 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 
 $router->get('/', 'HomeController::index');
+
+// Auth routes
+$router->match('/auth/login', 'AuthController::login', ['GET','POST']);
+$router->match('/auth/register', 'AuthController::register', ['GET','POST']);
+$router->get('/auth/logout', 'AuthController::logout');
+
+// Protected CRUD routes
 $router->get('/users/show/', 'UserController::show');
 $router->match('/users/create', 'UserController::create', ['GET','POST']);
 $router->match('/users/update/{id}', 'UserController::update', ['GET','POST']);

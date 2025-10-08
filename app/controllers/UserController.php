@@ -7,6 +7,12 @@ class UserController extends Controller {
         parent::__construct();
         $this->call->database();
         $this->call->model('UserModel');
+        $this->call->library('Auth');
+
+        // Check if user is logged in
+        if (!$this->auth->is_logged_in()) {
+            redirect('/auth/login');
+        }
     }
 
     public function show(){

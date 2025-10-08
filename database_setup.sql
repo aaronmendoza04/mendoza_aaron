@@ -1,5 +1,5 @@
 -- Database Setup Script for Student Management System
--- Run this script in your new Aiven MySQL database to create the required table
+-- Run this script in your new Aiven MySQL database to create the required tables
 
 -- Create the students table
 CREATE TABLE IF NOT EXISTS `students` (
@@ -7,6 +7,17 @@ CREATE TABLE IF NOT EXISTS `students` (
     `first_name` varchar(100) NOT NULL,
     `last_name` varchar(100) NOT NULL,
     `email` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Create the users table for authentication
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `email` varchar(255) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `role` enum('admin','user') NOT NULL DEFAULT 'user',
+    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
