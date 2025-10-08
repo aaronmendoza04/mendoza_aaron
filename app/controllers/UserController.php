@@ -7,7 +7,8 @@ class UserController extends Controller {
         parent::__construct();
         $this->call->database();
         $this->call->model('UserModel');
-        $this->call->library('Auth');
+
+        // Auth library is autoloaded
 
         // Check if user is logged in
         if (!$this->auth->is_logged_in()) {

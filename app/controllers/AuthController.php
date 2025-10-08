@@ -6,7 +6,7 @@ class AuthController extends Controller {
     {
         parent::__construct();
         $this->call->database();
-        $this->call->library('Auth');
+        // Auth library is autoloaded
         $this->call->model('AuthModel');
     }
 
