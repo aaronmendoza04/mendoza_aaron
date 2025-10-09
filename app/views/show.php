@@ -730,7 +730,7 @@
 
         <!-- Pagination -->
         <?php if (isset($page) && $page): ?>
-            <div >
+            <div class="pagination-container" id="paginationContainer">
                 <?= $page; ?>
             </div>
         <?php endif; ?>
